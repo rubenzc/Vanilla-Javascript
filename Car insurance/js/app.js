@@ -6,7 +6,87 @@ function Insurance(brand, year, type) {
     this.type = type;
 }
 
+Insurance.prototype.quoteInsurance = function() {
+    // 1 = American 1.15
+    // 2 = Asian 1.05
+    // 3 = European 1.35
+    let quantity;
+    const base = 2000;
+
+    switch(this.brand) {
+        case '1':
+            quantity = base * 1.15;
+            break;
+        case '2':
+            quantity = base * 1.05;
+            break;
+        case '3':
+            quantity = base * 1.35;
+            break;
+    }
+
+    //Read year. Older -> Cheaper
+    const diference = new Date().getFullYear() - this.year;
+    //Each yar reduce 3% the insurance value
+    quantity -= ((diference * 3) * quantity) / 100;
+
+    // Basic insurance = * 30%
+    // Basic insurance = * 50%
+    if(this.type === 'basic') {
+        quantity *= 1.30;
+    } else {
+        quantity*= 1.50;
+    }
+
+    return quantity;
+}
+
 function Interface() {
+
+}
+
+//Message to print
+Interface.prototype.showError = function(message, type) {
+    const div = document.createElement('div');
+
+    if (type === 'error') {
+        div.classList.add('message', 'error');
+    } else {
+        div.classList.add('message', 'right');
+    }
+    div.innerHTML = `${message}`;
+    //(Which element you want to insert, before which element you want to insert)
+    form.insertBefore(div, document.querySelector('.form-group'));
+
+    setTimeout(function(){
+        document.querySelector('.message').remove();
+    }, 3000);
+}
+
+Interface.prototype.showResult = function(insurance, total) {
+    const result = document.getElementById('result');
+    let brand;
+    switch(insurance.brand) {
+        case '1':
+            brand = 'American';
+            break;
+        case '2':
+            brand = 'Asian';
+            break;
+        case '3':
+            brand = 'European';
+            break;
+    }
+    const div = document.createElement('div');
+    //Show info
+    div.innerHTML = `
+        <p class='header'>Your resume: </p>
+        <p>Brand: ${brand}</p>
+        <p>Year: ${insurance.year}</p>
+        <p>Type: ${insurance.type}</p>
+        <p>Total: $ ${$total}</p>
+    `;
+    result = appendChild(div);
 
 }
 
@@ -28,9 +108,23 @@ form.addEventListener('submit', function(e){
     //Get the Car Insurance Type from radio button
     const type = document.querySelector('input[name="type"]:checked').value;
 
-    console.log(selectedBrand);
-    console.log(selectedYear);
-    console.log(type);
+    //Create an Interface instance
+    const interface = new Interface();
+
+    //Check nt empty fields
+    if(selectedBrand === '' || selectedYear === '' || type === '') {
+        
+        //Show error will be a prototype from Interface
+        interface.showError('Missing data! Please check the form and try again', 'error');
+    } else {
+        //Instance insurance & show interface
+        const insurance = new Insurance(selectedBrand, selectedYear, type);
+        // Quote the insurance
+        const quantity = insurance.quoteInsurance();
+        //Show result
+        interface.showResult(insurance, quantity);
+    }
+
 });
 
 
