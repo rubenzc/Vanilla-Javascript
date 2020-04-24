@@ -116,7 +116,7 @@ form.addEventListener('submit', function(e){
     //Create an Interface instance
     const interface = new Interface();
 
-    //Check nt empty fields
+    //Check empty fields
     if(selectedBrand === '' || selectedYear === '' || type === '') {
         
         //Show error will be a prototype from Interface
