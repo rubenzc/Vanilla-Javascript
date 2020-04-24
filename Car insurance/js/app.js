@@ -1,4 +1,4 @@
-// Quote constructor
+// Insurance constructor
 
 function Insurance(brand, year, type) {
     this.brand = brand;
@@ -46,13 +46,13 @@ function Interface() {
 }
 
 //Message to print
-Interface.prototype.showError = function(message, type) {
+Interface.prototype.showMessage = function(message, type) {
     const div = document.createElement('div');
 
     if (type === 'error') {
         div.classList.add('message', 'error');
     } else {
-        div.classList.add('message', 'right');
+        div.classList.add('message', 'success');
     }
     div.innerHTML = `${message}`;
     //(Which element you want to insert, before which element you want to insert)
@@ -63,6 +63,7 @@ Interface.prototype.showError = function(message, type) {
     }, 3000);
 }
 
+//Print insurance result
 Interface.prototype.showResult = function(insurance, total) {
     const result = document.getElementById('result');
     let brand;
@@ -84,9 +85,15 @@ Interface.prototype.showResult = function(insurance, total) {
         <p>Brand: ${brand}</p>
         <p>Year: ${insurance.year}</p>
         <p>Type: ${insurance.type}</p>
-        <p>Total: $ ${$total}</p>
+        <p>Total: ${total}</p>
     `;
-    result = appendChild(div);
+
+    const spinner = document.querySelector('#loading img');
+    spinner.style.display = 'block';
+    setTimeout (function(){
+        spinner.style.display = 'none';
+        result.appendChild(div);
+    }, 2500);
 
 }
 
@@ -115,19 +122,24 @@ form.addEventListener('submit', function(e){
     if(selectedBrand === '' || selectedYear === '' || type === '') {
         
         //Show error will be a prototype from Interface
-        interface.showError('Missing data! Please check the form and try again', 'error');
+        interface.showMessage('Missing data! Please check the form and try again', 'error');
     } else {
+        // Clean last results
+        const result = document.querySelector('#result div');
+        if(result !=null) {
+            result.remove();
+        }
+
         //Instance insurance & show interface
         const insurance = new Insurance(selectedBrand, selectedYear, type);
         // Quote the insurance
         const quantity = insurance.quoteInsurance();
         //Show result
         interface.showResult(insurance, quantity);
+        interface.showMessage('Quoting...', 'success');
     }
 
 });
-
-
 
 //Actual year is max
 const max = new Date().getFullYear(),
