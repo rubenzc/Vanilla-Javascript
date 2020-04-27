@@ -47,6 +47,21 @@ class Interface {
             form.reset();
         }, 3000);
     }
+
+    //Insert expenses to list
+    addExpenseList(name, quantity) {
+        const expensesList = document.querySelector('#expenses ul');
+        //Create a li
+        const li = document.createElement('li');
+        li.className ='list-group-item d-flex justify-content-between align-items-center';
+        //Insert the expense
+        li.innerHTML = `
+            ${name}
+            <span class="badge badge-primary badge-pill">$ ${quantity}</span>
+        `;
+        //Insert to html
+        expensesList.appendChild(li);
+    }
 }
 
 
@@ -81,5 +96,9 @@ form.addEventListener('submit', function(e){
         ui.printMessage('There is a mistake', 'error');
     } else {
         //Insert into HTML
+        //Right message
+        ui.printMessage('Correctly added', 'right');
+
+        ui.addExpenseList(expenseName, expenseQuantity);
     }
 })
