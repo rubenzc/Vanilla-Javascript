@@ -62,6 +62,12 @@ class Interface {
         //Insert to html
         expensesList.appendChild(li);
     }
+
+    //Check remaining budget
+    remainingBudget(quantity) {
+        const remaining 
+        console.log(expenseQuantity)
+    }
 }
 
 
@@ -95,10 +101,11 @@ form.addEventListener('submit', function(e){
         //Parameters(message, type)
         ui.printMessage('There is a mistake', 'error');
     } else {
-        //Insert into HTML
         //Right message
         ui.printMessage('Correctly added', 'right');
-
+        //Add expenses to list
         ui.addExpenseList(expenseName, expenseQuantity);
+        //Remaining budget
+        ui.remainingBudget(expenseQuantity);
     }
 })
