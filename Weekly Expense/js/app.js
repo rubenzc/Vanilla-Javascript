@@ -65,8 +65,31 @@ class Interface {
 
     //Check remaining budget
     remainingBudget(quantity) {
-        const remaining 
-        console.log(expenseQuantity)
+        const remaining = document.querySelector('span#remaining');
+        //Update reamining budget. remainingBudget references to method inside Budget class
+        const remainingBudgetUser = budgetQuantity.remainingBudget(quantity);
+        remaining.innerHTML = `${remainingBudgetUser}`;
+
+        //Call to function to change colors
+        this.checkBudget();
+    }
+
+    //Change color remaining budget
+    checkBudget() {
+        const budgetTotal = budgetQuantity.budget;
+        const remainingBudget = budgetQuantity.remaining;
+
+        //Check 25% expenses
+        if((budgetTotal / 4) > remainingBudget ){
+            const remaining = document.querySelector('.remaining');
+            remaining.classList.remove('alert-success', 'alert-warning');
+            remaining.classList.add('alert-danger');
+        } else if ((budgetTotal / 2) > remainingBudget){
+            const remaining = document.querySelector('.remaining');
+            remaining.classList.remove('alert-success');
+            remaining.classList.add('alert-warning');
+        }
+
     }
 }
 
