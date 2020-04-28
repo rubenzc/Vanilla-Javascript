@@ -1,0 +1,20 @@
+[
+     {
+          "id" : 1,
+          "name" : "Juan",
+          "company" : "EasyWebDev",
+          "job" : "Web developer"
+     },
+     {
+          "id" : 2,
+          "name" : "Alejandra",
+          "company" : "EasyWebDev",
+          "job" : "Designer"
+     },
+     {
+          "id" : 3,
+          "name" : "Pedro",
+          "company" : "EasyWebDev",
+          "job" : "iOs Developer"
+     }
+]
