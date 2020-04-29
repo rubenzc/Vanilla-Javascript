@@ -1,5 +1,6 @@
 document.getElementById('txtBtn').addEventListener('click', loadTxt);
 document.getElementById('jsonBtn').addEventListener('click', loadJSON);
+document.getElementById('apiBtn').addEventListener('click', loadREST);
 
 //FETCH API with local Data
 function loadTxt () {
@@ -37,4 +38,25 @@ function loadJSON(){
         .catch(function(error){
             console.log(error);
         });
+}
+
+//FECTH API with API REST
+function loadREST() {
+    fetch('https://picsum.photos/list')
+        .then(function(res){
+            return res.json();
+        })
+        .then(function(images){
+            let html = '';
+
+            images.forEach(function(image){
+                html += `
+                    <li>
+                        <a href="${image.post_url}" target_blank>Image</a>
+                        ${image.author}
+                    </li>
+                `;
+            });
+            document.getElementById('result').innerHTML = html;
+        })
 }
