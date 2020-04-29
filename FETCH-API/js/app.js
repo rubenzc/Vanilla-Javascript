@@ -59,4 +59,7 @@ function loadREST() {
             });
             document.getElementById('result').innerHTML = html;
         })
+        .catch(function(error){
+            console.log(error);
+        });
 }
