@@ -7,26 +7,18 @@ function loadTxt () {
     //url
     fetch('data.txt')
         //Connection and tell the FETCH API how you want the data (.txt)
-        .then(function(res){
-            return res.text();
-        })
+        .then(res => res.text() )
         //You already have the data and you can access it
-        .then(function(data){
-            document.getElementById('result').innerHTML = data;
-        })
-        .catch(function(error){
-            console.log(error);
-        });
+        .then(data => document.getElementById('result').innerHTML = data)
+        .catch(error => console.log(error));
 }
 
 //FETCH API with JSON
 function loadJSON(){
     fetch('employees.json')
         //Connection & we want the data in JSON format
-        .then(function(res) {
-            return res.json();
-        })
-        .then(function(data){
+        .then(res => res.json())
+        .then(data => {
             let html = '';
             data.forEach(function(employee){
                 html += `
@@ -35,18 +27,14 @@ function loadJSON(){
             })
             document.getElementById('result').innerHTML = html;
         })
-        .catch(function(error){
-            console.log(error);
-        });
+        .catch(error =>console.log(error));
 }
 
 //FECTH API with API REST
 function loadREST() {
     fetch('https://picsum.photos/list')
-        .then(function(res){
-            return res.json();
-        })
-        .then(function(images){
+        .then(res => res.json())
+        .then(images => {
             let html = '';
 
             images.forEach(function(image){
@@ -59,7 +47,5 @@ function loadREST() {
             });
             document.getElementById('result').innerHTML = html;
         })
-        .catch(function(error){
-            console.log(error);
-        });
+        .catch(error => console.log(error));
 }
