@@ -28,8 +28,26 @@ function loadNames(e){
         url += `results=${quantity}&`;
     }
 
+    //Create FETCH
+
+    fetch(url)
+        .then(res => res.json() )
+        .then(data => {
+            let htmlNames = `<h2>Names Generated</h2>`;
+            htmlNames += `<ul class="list">`;
+            data.results.forEach(name => {
+                htmlNames += `
+                    <li>${name.name.first}</li>
+                `;
+            })
+            htmlNames += `</ul>`
+            document.getElementById('result').innerHTML = htmlNames
+        })
+        .catch(error =>  console.log(error) )
+        
+
     //Connect to AJAX
-    const xhr = new XMLHttpRequest();
+    /*const xhr = new XMLHttpRequest();
 
     xhr.open('GET', url, true);
 
@@ -52,5 +70,7 @@ function loadNames(e){
             document.getElementById('result').innerHTML = htmlNames
         }
     };
-    xhr.send()
+    xhr.send()*/
+
+    
 }
