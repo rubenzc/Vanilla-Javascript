@@ -22,6 +22,9 @@ form.addEventListener('submit', (e) => {
         //Show error alert
     } else {
         //Ok! Let's check API
-        console.log('All right!');
+        quote.getValues(selectedCoin, selectedCryptocurrencie)
+            .then(data => {
+                ui.printResult(data.result.RAW, selectedCoin, selectedCryptocurrencie);
+            })
     }
 })
