@@ -45,31 +45,48 @@ class Interface {
     //3 parameters because of API needs
     printResult(result, coin, crypto) {
 
-        const dataCoin = result[crypto][coin];
+        //If result before => hide it
+        const beforeResult = document.querySelector('#result > div');
+        
+        if(beforeResult) {
+            beforeResult.remove();
+        }
 
-        //Short digits
-        let price = dataCoin.PRICE.toFixed(2),
-            percentage = dataCoin.CHANGEPCTDAY.toFixed(2),
-            lastUpdate = new Date(dataCoin.LASTUPDATE * 1000).toLocaleDateString();
-            
+            const dataCoin = result[crypto][coin];
 
-        //Build the template
-        let templateHTML = `
-            <div class="card bg-warning">
-                <div class="card-body text-light">
-                    <h2 class="card-title">Result:</h2>
-                    <p>The price of ${dataCoin.FROMSYMBOL} to ${dataCoin.TOSYMBOL} is: ${price}</p>
-                    <p>Last oscilation: % ${percentage}</p>
-                    <p>Last update: ${lastUpdate}</p>
+            //Short digits
+            let price = dataCoin.PRICE.toFixed(2),
+                percentage = dataCoin.CHANGEPCTDAY.toFixed(2),
+                lastUpdate = new Date(dataCoin.LASTUPDATE * 1000).toLocaleDateString();
+                
+
+            //Build the template
+            let templateHTML = `
+                <div class="card bg-warning">
+                    <div class="card-body text-light">
+                        <h2 class="card-title">Result:</h2>
+                        <p>The price of ${dataCoin.FROMSYMBOL} to ${dataCoin.TOSYMBOL} is: ${price}</p>
+                        <p>Last oscilation: % ${percentage}</p>
+                        <p>Last update: ${lastUpdate}</p>
+                    </div>
                 </div>
-            
-            
-            </div>
-        `;
+            `;
 
-        //Insert the result
-        document.querySelector('#result').innerHTML = templateHTML;
+            this.showHideSpinner('block');
 
+            setTimeout(() => {
+                //Insert the result
+                document.querySelector('#result').innerHTML = templateHTML;
+
+                //Hide spinner
+                this.showHideSpinner('none');
+            }, 3000);
+
+    }
+
+    showHideSpinner(display) {
+        const spinner = document.querySelector('.content-spinner');
+        spinner.style.display = display;
     }
 
 }
