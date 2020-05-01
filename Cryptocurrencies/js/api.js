@@ -12,8 +12,6 @@ class API {
         //Answer in JSON
         const coins = await urlGetCoins.json();
 
-        console.log(coins);
-
         return {coins};
     
     }

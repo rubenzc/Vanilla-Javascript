@@ -12,7 +12,17 @@ class Interface {
         //Call to API (Method fron API class)
         quote.getApiCoins()
             .then(coins => {
-                console.log(coins);
+                //Create a select with api option
+                const select = document.querySelector('#cryptocurrencie');
+                //Pass key obligatorily to acces to value to iterate the api results
+                for ( const [key, value] of Object.entries(coins.coins.Data)) {
+                    //Add Symbol and name as options
+                    const option = document.createElement('option');
+                    option.value = value.Symbol;
+                    option.appendChild(document.createTextNode(value.CoinName));
+                    select.appendChild(option);
+                }
+
             })
     }
 
