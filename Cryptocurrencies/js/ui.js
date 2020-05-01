@@ -1,5 +1,21 @@
 class Interface {
 
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        this.buildSelect();
+    }
+
+    buildSelect() {
+        //Call to API (Method fron API class)
+        quote.getApiCoins()
+            .then(coins => {
+                console.log(coins);
+            })
+    }
+
     showMessage (message, classes) {
         const div = document.createElement('div');
         div.className = classes;

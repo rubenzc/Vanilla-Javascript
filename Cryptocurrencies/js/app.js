@@ -1,9 +1,8 @@
-//Instance UI Classes
+//Instance API &UI classess
+const quote = new API('1a880a0ee5b2c8dc5555bf5cd447837aa1908d5e04e9f241b74687b11fa0f624');
 const ui = new Interface();
 
-
 //Read the form
-
 const form = document.querySelector('#form')
 
 form.addEventListener('submit', (e) => {
