@@ -60,7 +60,24 @@ class UI {
             this.markers.addLayer(marker);
         });
         this.markers.addTo(this.mapa);
+    }
 
+    getSearch(search) {
+        this.api.getData()
+            .then(data => {
+                //Get Data
+                const results = data.resJSON.results;
+                //Send JSON and search to filter it
+                this.filterSearch(results, search);
+            })
+    }
+
+    filterSearch(result, search) {
+        //filter
+        const filter = result.filter(filter => filter.calle.indexOf(search) !== -1);
+        console.log(filter);
+        //show markers filtered
+        this.showMarkers(filter);
     }
 }
 
