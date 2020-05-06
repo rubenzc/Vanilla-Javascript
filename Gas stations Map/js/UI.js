@@ -43,16 +43,23 @@ class UI {
         data.forEach(establishment => {
             // destructuring
             const {latitude, longitude, calle, regular, premium} = establishment;
+
+            //Create Popup
+            const popUpInfo = L.popup()
+            .setContent(`<p>Street: ${calle}</p>
+                        <p><b>Regular: $ ${regular}</b></p>
+                        <p><b>Premium: $ ${premium}</b></p>                   
+            `);
+
             //Add the marker
             const marker = new L.marker([
                 parseFloat(latitude),
                 parseFloat(longitude)
-            ]);
+            ]).bindPopup(popUpInfo);
             //Markers layer
             this.markers.addLayer(marker);
         });
         this.markers.addTo(this.mapa);
-
 
     }
 }
