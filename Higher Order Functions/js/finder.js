@@ -1,9 +1,9 @@
 // Create years
 const years = document.createElement('option');
 const  max = new Date().getFullYear();
-let  min = max - 10;
+let  imu = max - 10;
 
-for(let i = max; i >  min; i--) {
+for(let i = max; i >  imu; i--) {
     let option =  document.createElement('option');
     option.value = i;
     option.innerText = i;
@@ -175,7 +175,18 @@ year.addEventListener('input', e => {
     //Call to filter cars function
     filterCar();
 })
-
+const minimun = document.querySelector('#min');
+minimun.addEventListener('input', e => {
+    //Convert to Number
+    dataSearch.min = Number(e.target.value);
+    filterCar();
+})
+const maximun = document.querySelector('#max');
+maximun.addEventListener('input', e => {
+    //Convert to Number
+    dataSearch.max = Number(e.target.value);
+    filterCar()
+})
 
 
 function showCars(cars) {
@@ -200,7 +211,7 @@ function showCars(cars) {
 }
 
 function filterCar() {
-    const result = getCars().filter(filterBrand).filter(filterYear);
+    const result = getCars().filter(filterBrand).filter(filterYear).filter(filterMin).filter(filterMax);
 
     if(result.length) {
         showCars(result);
@@ -220,6 +231,22 @@ function filterBrand(car) {
 function filterYear(car) {
     if(dataSearch.year) {
         return car.year === dataSearch.year;
+    } else {
+        return car;
+    }
+}
+
+function filterMin(car) {
+    if(dataSearch.min) {
+        return car.price >= dataSearch.min;
+    } else {
+        return car;
+    }
+}
+
+function filterMax(car) {
+    if(dataSearch.min) {
+        return car.price <= dataSearch.max;
     } else {
         return car;
     }
