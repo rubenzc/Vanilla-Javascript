@@ -166,36 +166,30 @@ brand.addEventListener('input', e => {
 
     //Call to filter cars function
     filterCar();
-})
+})  
 const year = document.querySelector('#year');
 year.addEventListener('input', e => {
     //Convert to Number
     dataSearch.year = Number(e.target.value);
-
-    //Call to filter cars function
     filterCar();
 })
 const minimun = document.querySelector('#min');
 minimun.addEventListener('input', e => {
-    //Convert to Number
     dataSearch.min = Number(e.target.value);
     filterCar();
 })
 const maximun = document.querySelector('#max');
 maximun.addEventListener('input', e => {
-    //Convert to Number
     dataSearch.max = Number(e.target.value);
     filterCar()
 })
 const doors = document.querySelector('#doors');
 doors.addEventListener('input', e => {
-    //Convert to Number
     dataSearch.doors = Number(e.target.value);
     filterCar()
 })
 const transmission = document.querySelector('#transmission');
 transmission.addEventListener('input', e => {
-    //Convert to Number
     dataSearch.transmission = e.target.value;
     filterCar()
 })
@@ -205,17 +199,21 @@ color.addEventListener('input', e => {
     filterCar()
 })
 
-
-
-function showCars(cars) {
-    
-    //Read Result element
+function clearHTML() {
     const container = document.querySelector('#result');
 
-    //Crear last results
+    //Clear last results
     while(container.firstChild) {
         container.removeChild(container.firstChild);
     }
+}
+
+function showCars(cars) {
+    
+    clearHTML();
+
+    //Read Result element
+    const container = document.querySelector('#result');
 
     //Build HTML results
     cars.forEach(car => {
@@ -228,13 +226,22 @@ function showCars(cars) {
 
 }
 
+function noResults() {
+    clearHTML();
+
+    const noResults = document.createElement('div');
+    noResults.classList.add('alert', 'error');
+    noResults.appendChild(document.createTextNode('No Results'));
+    document.querySelector('#result').appendChild(noResults);
+}
+
 function filterCar() {
     const result = getCars().filter(filterBrand).filter(filterYear).filter(filterMin).filter(filterMax).filter(filterDoors).filter(filterTransmission).filter(filterColor);
 
     if(result.length) {
         showCars(result);
     } else {
-        alert('No results');
+        noResults();
     }
 }
 
