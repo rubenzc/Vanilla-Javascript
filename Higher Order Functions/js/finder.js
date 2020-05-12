@@ -163,7 +163,19 @@ document.addEventListener('DOMContentLoaded', () => {
 const brand = document.querySelector('#brand');
 brand.addEventListener('input', e => {
     dataSearch.brand = e.target.value;
+
+    //Call to filter cars function
+    filterCar();
 })
+const year = document.querySelector('#year');
+year.addEventListener('input', e => {
+    //Convert to Number
+    dataSearch.year = Number(e.target.value);
+
+    //Call to filter cars function
+    filterCar();
+})
+
 
 
 function showCars(cars) {
@@ -171,6 +183,12 @@ function showCars(cars) {
     //Read Result element
     const container = document.querySelector('#result');
 
+    //Crear last results
+    while(container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+
+    //Build HTML results
     cars.forEach(car => {
         const carHTML = document.createElement('p');
         carHTML.innerHTML = `
@@ -179,4 +197,30 @@ function showCars(cars) {
         container.appendChild(carHTML);
     })
 
+}
+
+function filterCar() {
+    const result = getCars().filter(filterBrand).filter(filterYear);
+
+    if(result.length) {
+        showCars(result);
+    } else {
+        alert('No results');
+    }
+}
+
+function filterBrand(car) {
+    if(dataSearch.brand) {
+        return car.brand === dataSearch.brand;
+    } else {
+        return car;
+    }
+}
+
+function filterYear(car) {
+    if(dataSearch.year) {
+        return car.year === dataSearch.year;
+    } else {
+        return car;
+    }
 }
