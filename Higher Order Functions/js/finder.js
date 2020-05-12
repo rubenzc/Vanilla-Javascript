@@ -187,6 +187,24 @@ maximun.addEventListener('input', e => {
     dataSearch.max = Number(e.target.value);
     filterCar()
 })
+const doors = document.querySelector('#doors');
+doors.addEventListener('input', e => {
+    //Convert to Number
+    dataSearch.doors = Number(e.target.value);
+    filterCar()
+})
+const transmission = document.querySelector('#transmission');
+transmission.addEventListener('input', e => {
+    //Convert to Number
+    dataSearch.transmission = e.target.value;
+    filterCar()
+})
+const color = document.querySelector('#color');
+color.addEventListener('input', e => {
+    dataSearch.color = e.target.value;
+    filterCar()
+})
+
 
 
 function showCars(cars) {
@@ -211,7 +229,7 @@ function showCars(cars) {
 }
 
 function filterCar() {
-    const result = getCars().filter(filterBrand).filter(filterYear).filter(filterMin).filter(filterMax);
+    const result = getCars().filter(filterBrand).filter(filterYear).filter(filterMin).filter(filterMax).filter(filterDoors).filter(filterTransmission).filter(filterColor);
 
     if(result.length) {
         showCars(result);
@@ -247,6 +265,30 @@ function filterMin(car) {
 function filterMax(car) {
     if(dataSearch.min) {
         return car.price <= dataSearch.max;
+    } else {
+        return car;
+    }
+}
+
+function filterDoors(car) {
+    if(dataSearch.doors) {
+        return car.doors === dataSearch.doors;
+    } else {
+        return car;
+    }
+}
+
+function filterTransmission(car) {
+    if(dataSearch.transmission) {
+        return car.transmission === dataSearch.transmission;
+    } else {
+        return car;
+    }
+}
+
+function filterColor(car) {
+    if(dataSearch.color) {
+        return car.color === dataSearch.color;
     } else {
         return car;
     }
