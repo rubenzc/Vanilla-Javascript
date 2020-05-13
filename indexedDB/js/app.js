@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function addData(e) {
         e.preventDefault();
 
-        const newDate = {
+        const newAppointment = {
             pet: petName.value,
             client: clientName.value,
             phone: phone.value,
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //INDEXED DB transactions
         let transaction = DB.transaction(['appointments'], 'readwrite');
         let objectStore = transaction.objectStore('appointments');
-        let request = objectStore.add(newDate);
+        let request = objectStore.add(newAppointment);
 
         console.log(request);
 
@@ -114,12 +114,55 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="font-weight-bold">symptoms: <span class="font-weight-normal">${cursor.value.symptoms}</span></p>
                     
                 `;
+
+                //Delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete', 'btn', 'btn-danger');
+                deleteButton.innerHTML = '<span aria-hidden="true"></span> Delete';
+                deleteButton.onclick = deleteAppointment;
+                appointmentHTML.appendChild(deleteButton);
+
                 appointments.appendChild(appointmentHTML);
 
+                //Check next appointments
                 cursor.continue();
 
+            } else {
+                //When there is no register
+                if(!appointments.firstChild) {
+                    headingManage.textContent = 'Add appointments to get started';
+                    let list = document.createElement('p');
+                    list.classList.add('text-center');
+                    list.textContent = 'There is no appointments';
+                    appointments.appendChild(list);
+                } else {
+                    headingManage.textContent = 'Manage your appointments';
+                }
             }
             
+        }
+    }
+
+    function deleteAppointment(e){
+        let appointmentID = Number (e.target.parentElement.getAttribute('data-appointment-id'));
+        
+        //INDEXED DB transactions
+        let transaction = DB.transaction(['appointments'], 'readwrite');
+        let objectStore = transaction.objectStore('appointments');
+        let request = objectStore.delete(appointmentID);
+
+        transaction.oncomplete = () => {
+            e.target.parentElement.parentElement.removeChild(e.target.parentElement);
+            console.log(`Deleted appointment ${appointmentID}`)
+            if(!appointments.firstChild) {
+                headingManage.textContent = 'Add appointments to get started';
+                let list = document.createElement('p');
+                list.classList.add('text-center');
+                list.textContent = 'There is no appointments';
+                appointments.appendChild(list);
+            } else {
+                headingManage.textContent = 'Manage your appointments';
+            }
         }
     }
 
