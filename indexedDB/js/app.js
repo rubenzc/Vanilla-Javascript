@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //Asign to data base
         DB = createDB.result;
-
+        showAppointments();
     }
 
     //This method only runs once and is great to create the Schema
@@ -49,8 +49,78 @@ document.addEventListener('DOMContentLoaded', () => {
         objectstore.createIndex('hour', 'hour', { unique: false });
         objectstore.createIndex('symptoms', 'symptoms', { unique: false });
 
-        console.log('BBDD ready');
+    }
 
+    form.addEventListener('submit', addData);
+
+    function addData(e) {
+        e.preventDefault();
+
+        const newDate = {
+            pet: petName.value,
+            client: clientName.value,
+            phone: phone.value,
+            date: date.value,
+            hour: hour.value,
+            symptoms: symptoms.value
+
+        }
+
+        //INDEXED DB transactions
+        let transaction = DB.transaction(['appointments'], 'readwrite');
+        let objectStore = transaction.objectStore('appointments');
+        let request = objectStore.add(newDate);
+
+        console.log(request);
+
+        request.onsuccess = () => {
+            form.reset();
+        }
+        transaction.oncomplete = () => {
+            console.log('Added appointment');
+            showAppointments();
+        }
+        transaction.onerror = () => {
+            console.log('Error!');
+        }
+
+    }
+
+    function showAppointments() {
+        //Clear last appointments
+        while(appointments.firstChild) {
+            appointments.removeChild(appointments.firstChild);
+        }
+
+        //Create an objectStore
+        let objectStore = DB.transaction('appointments').objectStore('appointments');
+
+        //Returns a request
+        objectStore.openCursor().onsuccess = function(e) {
+            //Cursor is located in the register indicated to access the data
+            let cursor = e.target.result;
+
+            if(cursor) {
+                let appointmentHTML = document.createElement('li');
+                appointmentHTML.setAttribute('data-appointment-id', cursor.value.key);
+                appointmentHTML.classList.add('list-group-item');
+
+                appointmentHTML.innerHTML = `
+                    <p class="font-weight-bold">Pet: <span class="font-weight-normal">${cursor.value.pet}</span></p>
+                    <p class="font-weight-bold">Client name: <span class="font-weight-normal">${cursor.value.client}</span></p>
+                    <p class="font-weight-bold">Phone: <span class="font-weight-normal">${cursor.value.phone}</span></p>
+                    <p class="font-weight-bold">Date: <span class="font-weight-normal">${cursor.value.date}</span></p>
+                    <p class="font-weight-bold">Hour: <span class="font-weight-normal">${cursor.value.hour}</span></p>
+                    <p class="font-weight-bold">symptoms: <span class="font-weight-normal">${cursor.value.symptoms}</span></p>
+                    
+                `;
+                appointments.appendChild(appointmentHTML);
+
+                cursor.continue();
+
+            }
+            
+        }
     }
 
 })
